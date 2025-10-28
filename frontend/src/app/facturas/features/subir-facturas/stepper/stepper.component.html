@@ -1,0 +1,188 @@
+<div class="">
+  <!-- Stepper -->
+  <div>
+    <!-- Stepper Nav -->
+    <ul class="flex flex-row gap-x-2 mt-5">
+      <!-- Paso 1: Subir Archivo -->
+      <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" [class.active]="currentStep === 1"
+        [class.success]="currentStep > 1">
+        <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+          <span class="size-7 flex justify-center items-center shrink-0 font-medium rounded-full"
+            [class]="currentStep >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-white'">
+            <span *ngIf="currentStep <= 1">1</span>
+            <svg *ngIf="currentStep > 1" class="shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24"
+              height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
+          <span class="ms-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
+            Subir Factura
+          </span>
+        </span>
+        <div class="w-full h-px flex-1 group-last:hidden"
+          [class]="currentStep > 1 ? 'bg-blue-600 dark:bg-blue-600' : 'bg-gray-200 dark:bg-neutral-700'"></div>
+      </li>
+
+      <!-- Paso 2: Procesando -->
+      <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" [class.active]="currentStep === 3"
+        [class.success]="currentStep > 2">
+        <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+          <span class="size-7 flex justify-center items-center shrink-0 font-medium rounded-full"
+            [class]="currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-white'">
+            <span *ngIf="currentStep <= 2">2</span>
+            <svg *ngIf="currentStep > 2" class="shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24"
+              height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
+          <span class="ms-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
+            Procesando
+          </span>
+        </span>
+        <div class="w-full h-px flex-1 group-last:hidden"
+          [class]="currentStep > 2 ? 'bg-blue-600 dark:bg-blue-600' : 'bg-gray-200 dark:bg-neutral-700'"></div>
+      </li>
+
+      <!-- Paso 3: Data -->
+      <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" [class.active]="currentStep === 4"
+        [class.success]="currentStep > 3">
+        <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+          <span class="size-7 flex justify-center items-center shrink-0 font-medium rounded-full"
+            [class]="currentStep >= 3 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-white'">
+            <span *ngIf="currentStep <= 3">3</span>
+            <svg *ngIf="currentStep > 3" class="shrink-0 size-3" xmlns="http://www.w3.org/2000/svg" width="24"
+              height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"
+              stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </span>
+          <span class="ms-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
+            Data
+          </span>
+        </span>
+        <div class="w-full h-px flex-1 group-last:hidden"
+          [class]="currentStep > 3 ? 'bg-blue-600 dark:bg-blue-600' : 'bg-gray-200 dark:bg-neutral-700'"></div>
+      </li>
+
+      <!-- Paso 4: Subir data -->
+      <li class="flex items-center gap-x-2 shrink basis-0 flex-1 group" [class.active]="currentStep === 4">
+        <span class="min-w-7 min-h-7 group inline-flex items-center text-xs align-middle">
+          <span class="size-7 flex justify-center items-center shrink-0 font-medium rounded-full"
+            [class]="currentStep >= 4 ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 dark:bg-neutral-700 dark:text-white'">
+            <span>4</span>
+          </span>
+          <span class="ms-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
+            Subir data
+          </span>
+        </span>
+        <div class="w-full h-px flex-1 group-last:hidden bg-gray-200 dark:bg-neutral-700"></div>
+      </li>
+    </ul>
+    <!-- End Stepper Nav -->
+
+    <!-- Stepper Content -->
+    <div class="mt-5 sm:mt-8">
+      <!-- Paso 1: Subir Factura -->
+      <div *ngIf="currentStep === 1">
+        <form [formGroup]="subirFacturaForm">
+          <fieldset>
+            <div class="flex items-center justify-center w-full">
+              <label for="subir_factura"
+                class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                  <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                  </svg>
+                  <p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span class="font-semibold">Click para subir</span>
+                  </p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400">PDF o Imágen</p>
+                  <p *ngIf="selectedFile" class="mt-2 text-sm text-green-600 dark:text-green-400">
+                    Archivo seleccionado: {{ selectedFile.name }}
+                  </p>
+                </div>
+                <input type="file" (change)="onFileSelected($event)" id="subir_factura" formControlName="factura"
+                  class="hidden" accept="image/*,.pdf">
+              </label>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <!-- End Paso 1 -->
+
+      <!-- Paso 2: Procesando -->
+      <div *ngIf="currentStep === 2">
+        <div
+          class="p-8 bg-gray-50 flex flex-col justify-center items-center border border-dashed border-gray-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
+          <div *ngIf="isLoading" class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+          <h3 class="text-lg font-medium text-gray-800 dark:text-neutral-200 mb-2">
+            {{ isLoading ? 'Procesando factura...' : 'Procesamiento completado' }}
+          </h3>
+          <p class="text-gray-500 dark:text-neutral-400 text-center">
+            {{ isLoading ?
+            'Estamos enviando tu factura a n8n para su procesamiento. Esto puede tomar unos segundos.' :
+            '¡Procesamiento completado! Avanzando al siguiente paso...' }}
+          </p>
+        </div>
+      </div>
+      <!-- End Paso 2 -->
+
+      <!-- Paso 3: Data -->
+      <div *ngIf="currentStep === 3">
+        <div
+          class="p-8 bg-gray-50 border border-dashed border-gray-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
+          <app-validar-data [jsonData]="jsonData_n8n"></app-validar-data>
+        </div>
+      </div>
+      <!-- End Paso 3 -->
+
+      <!-- Paso 4: Subir data -->
+      <div *ngIf="currentStep === 4">
+        <div
+          class="p-6 bg-gray-50 border border-dashed border-gray-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
+          <h3 class="text-lg font-medium text-gray-800 dark:text-neutral-200 mb-4">Subir Data</h3>
+          <p class="text-gray-500 dark:text-neutral-400">Contenido del paso 4 - Aquí va tu formulario para subir la data
+            procesada.</p>
+          <!-- Aquí puedes agregar el formulario del paso 4 -->
+        </div>
+      </div>
+      <!-- End Paso 4 -->
+
+      <!-- Button Group -->
+      <div class="mt-8 flex justify-between items-center gap-x-2">
+        <button type="button"
+          class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-2xs hover:bg-gray-50 focus:outline-hidden focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+          (click)="onPreviousStep()" [disabled]="currentStep === 1">
+          <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"></path>
+          </svg>
+          Anterior
+        </button>
+
+        <button *ngIf="currentStep < 4" type="button"
+          class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
+          (click)="onNextStep()" [disabled]="!canProceedToNextStep()">
+          Siguiente
+          <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"></path>
+          </svg>
+        </button>
+
+        <button *ngIf="currentStep === 4" type="button"
+          class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 focus:outline-hidden focus:bg-green-700"
+          (click)="reiniciarProceso()">
+          Finalizar
+        </button>
+      </div>
+      <!-- End Button Group -->
+    </div>
+    <!-- End Stepper Content -->
+  </div>
+  <!-- End Stepper -->
+</div>
