@@ -1,11 +1,13 @@
-<form class="w-full max-w-7xl mx-auto px-6">
+<form class="w-full max-w-7xl mx-auto px-6" #facturaForm="ngForm">
+  <h2>Datos Factura</h2>
+  <br>
   <!-- Fila 1 -->
   <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
     <div class="relative z-0 w-full mb-5 group">
-      <input type="text" name="id" id="id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+      <input type="text" name="id" id="id" [(ngModel)]="facturaData.id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
         border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
         dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required value=" {{ jsonData.output.id }} " />
+        required />
       <label for="id" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
         peer-focus:text-blue-600 peer-focus:dark:text-blue-500
@@ -16,24 +18,10 @@
     </div>
 
     <div class="relative z-0 w-full mb-5 group">
-      <input type="text" name="cliente" id="cliente" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+      <input type="text" name="productos" id="productos" [(ngModel)]="facturaData.productos" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
         border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
         dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required value="{{ jsonData.output.cliente }}"/>
-      <label for="cliente" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
-        transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
-        peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-        peer-focus:scale-75 peer-focus:-translate-y-6">
-        Cliente
-      </label>
-    </div>
-
-    <div class="relative z-0 w-full mb-5 group">
-      <input type="text" name="productos" id="productos" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required value="{{ jsonData.output.productos }}"/>
+        required />
       <label for="productos" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
         peer-focus:text-blue-600 peer-focus:dark:text-blue-500
@@ -42,16 +30,13 @@
         Productos
       </label>
     </div>
-  </div>
 
-  <!-- Fila 2 -->
-  <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
     <div class="relative z-0 w-full mb-5 group">
-      <input type="date" name="fecha_generacion" id="fecha_generacion" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+      <input type="date" name="fechaGeneracion" id="fechaGeneracion" [(ngModel)]="facturaData.fechaGeneracion" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
         border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
         dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required value="{{ jsonData.output.fecha_generacion}}"/>
-      <label for="fecha_generacion" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        required />
+      <label for="fechaGeneracion" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
         peer-focus:text-blue-600 peer-focus:dark:text-blue-500
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
@@ -59,13 +44,16 @@
         Fecha de generación
       </label>
     </div>
+  </div>
 
+  <!-- Fila 2 -->
+  <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
     <div class="relative z-0 w-full mb-5 group">
-      <input type="date" name="fecha_vencimiento" id="fecha_vencimiento" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+      <input type="date" name="fechaVencimiento" id="fechaVencimiento" [(ngModel)]="facturaData.fechaVencimiento" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
         border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
         dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required value="{{ jsonData.output.fecha_vencimiento }}"/>
-      <label for="fecha_vencimiento" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        required />
+      <label for="fechaVencimiento" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
         peer-focus:text-blue-600 peer-focus:dark:text-blue-500
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
@@ -75,11 +63,11 @@
     </div>
 
     <div class="relative z-0 w-full mb-5 group">
-      <input type="number" name="total_iva" id="total_iva" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+      <input type="number" name="totalIva" id="totalIva" [(ngModel)]="facturaData.totalIva" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
         border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
         dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required value="{{ jsonData.output.total_iva }}"/>
-      <label for="total_iva" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        required />
+      <label for="totalIva" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
         peer-focus:text-blue-600 peer-focus:dark:text-blue-500
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
@@ -87,15 +75,13 @@
         Total IVA
       </label>
     </div>
-  </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
     <div class="relative z-0 w-full mb-5 group">
-      <input type="number" name="total_bruto" id="total_bruto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+      <input type="number" name="totalBruto" id="totalBruto" [(ngModel)]="facturaData.totalBruto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
         border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
         dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required value="{{ jsonData.output.total_bruto }}"/>
-      <label for="total_bruto" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        required />
+      <label for="totalBruto" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
         peer-focus:text-blue-600 peer-focus:dark:text-blue-500
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
@@ -103,13 +89,16 @@
         Total bruto
       </label>
     </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
 
     <div class="relative z-0 w-full mb-5 group">
-      <input type="number" name="total_pagar" id="total_pagar" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+      <input type="number" name="totalPagar" id="totalPagar" [(ngModel)]="facturaData.totalPagar" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
         border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
         dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required value="{{ jsonData.output.total_pagar }}"/>
-      <label for="total_pagar" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        required />
+      <label for="totalPagar" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
         peer-focus:text-blue-600 peer-focus:dark:text-blue-500
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
@@ -119,16 +108,91 @@
     </div>
 
     <div class="relative z-0 w-full mb-5 group">
-      <input type="text" name="metodo_pago" id="metodo_pago" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+      <input type="text" name="metodoPago" id="metodoPago" [(ngModel)]="facturaData.metodoPago" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
         border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        value="{{ jsonData.output.metodo_pago }}" />
-      <label for="metodo_pago" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      <label for="metodoPago" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
         peer-focus:text-blue-600 peer-focus:dark:text-blue-500
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Método de pago
+      </label>
+    </div>
+  </div>
+
+  <h2>Datos cliente</h2>
+  <br>
+  <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
+    <div class="relative z-0 w-full mb-5 group">
+      <input type="text" name="nombreCliente" id="nombreCliente" [(ngModel)]="facturaData.nombreCliente" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
+        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
+        required />
+      <label for="nombreCliente" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+        peer-focus:scale-75 peer-focus:-translate-y-6">
+        Cliente
+      </label>
+    </div>
+
+    <div class="relative z-0 w-full mb-5 group">
+      <input type="text" name="cedula" id="cedula" [(ngModel)]="facturaData.cedula" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
+        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
+        required />
+      <label for="Cédula" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+        peer-focus:scale-75 peer-focus:-translate-y-6">
+        Cédula
+      </label>
+    </div>
+
+    <div class="relative z-0 w-full mb-5 group">
+      <input type="text" name="direccion" id="direccion" [(ngModel)]="facturaData.direccion" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
+        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
+        required />
+      <label for="Dirección" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+        peer-focus:scale-75 peer-focus:-translate-y-6">
+        Dirección
+      </label>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
+    <div class="relative z-0 w-full mb-5 group">
+      <input type="text" name="telefono" id="telefono" [(ngModel)]="facturaData.telefono" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
+        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
+        required />
+      <label for="Teléfono" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+        peer-focus:scale-75 peer-focus:-translate-y-6">
+        Teléfono
+      </label>
+    </div>
+
+    <div class="relative z-0 w-full mb-5 group">
+      <input type="text" name="ciudad" id="ciudad" [(ngModel)]="facturaData.ciudad" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
+        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
+        required />
+      <label for="Cédula" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+        peer-focus:scale-75 peer-focus:-translate-y-6">
+        Ciudad
       </label>
     </div>
   </div>

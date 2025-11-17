@@ -11,6 +11,6 @@ export class SubirFacturaService {
   constructor(private http: HttpClient) {}
 
   postFactura(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${environment.SUBIR_FACTURAS_n8n}`, formData);
+    return this.http.post<any>(`${environment.SUBIR_FACTURA_n8n}`, formData);
   }
 }

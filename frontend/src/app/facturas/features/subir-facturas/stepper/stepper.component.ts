@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SubirFacturaService } from '../../../services/subir-factura.service';
 import { CommonModule } from '@angular/common';
 import { ValidarDataComponent } from './validar-data/validar-data.component';
+import { SubirFacturaPg } from '../../../services/subir-factura-pg.service';
 
 @Component({
   selector: 'app-stepper',
@@ -12,6 +13,7 @@ import { ValidarDataComponent } from './validar-data/validar-data.component';
   styleUrl: './stepper.component.css',
 })
 export class StepperComponent implements OnInit {
+  @ViewChild(ValidarDataComponent) validarDataComponent!: ValidarDataComponent;
   @Output() jsonData_n8n: any;
   selectedFile: File | null = null;
   currentStep: number = 1;
@@ -21,7 +23,11 @@ export class StepperComponent implements OnInit {
   subirFacturaForm: FormGroup;
   factura: FormControl;
 
-  constructor(public subirFactura: SubirFacturaService, private cdRef: ChangeDetectorRef) {
+  constructor(
+    public subirFactura: SubirFacturaService,
+    private cdRef: ChangeDetectorRef,
+    private subirFacturaPG: SubirFacturaPg
+  ) {
     this.factura = new FormControl();
     this.subirFacturaForm = new FormGroup({ factura: this.factura });
   }
@@ -116,6 +122,43 @@ export class StepperComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  // Método para guardar la factura
+  onGuardarFactura(): void {
+    if (!this.validarDataComponent || !this.selectedFile) {
+      return;
+    }
+
+    const facturaData = this.validarDataComponent.getFormData();
+
+    // Crear FormData para enviar tanto los datos como el archivo
+    const formData = new FormData();
+
+    formData.append('facturaData', JSON.stringify(facturaData));
+
+    formData.append('file', this.selectedFile, this.selectedFile.name);
+
+    this.isLoading = true;
+
+    this.subirFacturaPG.crearFacturaConArchivo(formData).subscribe({
+      next: (response: any) => {
+        console.log('Factura y archivo guardados:');
+        this.isLoading = false;
+
+        if (response.success) {
+          this.currentStep = 4;
+          this.cdRef.detectChanges();
+        } else {
+          alert(`Error: ${response.message}`);
+        }
+      },
+      error: (error: any) => {
+        console.error('Error al guardar:', error);
+        this.isLoading = false;
+        alert('Error al guardar la factura. Intenta nuevamente.');
+      },
+    });
   }
 
   reiniciarProceso(): void {
