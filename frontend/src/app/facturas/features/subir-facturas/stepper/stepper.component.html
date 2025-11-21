@@ -59,7 +59,7 @@
             </svg>
           </span>
           <span class="ms-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
-            Data
+            Datos
           </span>
         </span>
         <div class="w-full h-px flex-1 group-last:hidden"
@@ -74,7 +74,7 @@
             <span>4</span>
           </span>
           <span class="ms-2 text-sm font-medium text-gray-800 dark:text-neutral-200">
-            Subir data
+            Subir Factura
           </span>
         </span>
         <div class="w-full h-px flex-1 group-last:hidden bg-gray-200 dark:bg-neutral-700"></div>
@@ -135,7 +135,7 @@
       <div *ngIf="currentStep === 3">
         <div
           class="p-8 bg-gray-50 border border-dashed border-gray-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-          <app-validar-data [jsonData]="jsonData_n8n"></app-validar-data>
+          <validar-data [jsonData]="jsonData_n8n"></validar-data>
         </div>
       </div>
       <!-- End Paso 3 -->
@@ -144,10 +144,20 @@
       <div *ngIf="currentStep === 4">
         <div
           class="p-6 bg-gray-50 border border-dashed border-gray-200 rounded-xl dark:bg-neutral-800 dark:border-neutral-700">
-          <h3 class="text-lg font-medium text-gray-800 dark:text-neutral-200 mb-4">Subir Data</h3>
-          <p class="text-gray-500 dark:text-neutral-400">Contenido del paso 4 - Aquí va tu formulario para subir la data
-            procesada.</p>
-          <!-- Aquí puedes agregar el formulario del paso 4 -->
+          <div class="text-center max-w-md mx-auto">
+            <!-- Ícono de éxito -->
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+              <svg class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              ¡Factura Guardada!
+            </h3>
+            <p class="text-gray-600 dark:text-gray-300 text-lg">
+              La factura ha sido guardada exitosamente.
+            </p>
+          </div>
         </div>
       </div>
       <!-- End Paso 4 -->
@@ -164,7 +174,7 @@
           Anterior
         </button>
 
-        <button *ngIf="currentStep < 4" type="button"
+        <button *ngIf="currentStep < 3" type="button"
           class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-hidden focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
           (click)="onNextStep()" [disabled]="!canProceedToNextStep()">
           Siguiente
@@ -172,6 +182,22 @@
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m9 18 6-6-6-6"></path>
           </svg>
+        </button>
+
+        <!-- Botón Guardar (solo para paso 3) -->
+        <button *ngIf="currentStep === 3" type="button"
+          class="py-2 px-3 inline-flex items-center gap-x-1 text-sm font-medium rounded-lg border border-transparent bg-green-600 text-white hover:bg-green-700 focus:outline-hidden focus:bg-green-700"
+          (click)="onGuardarFactura()" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Guardar Factura</span>
+          <span *ngIf="isLoading">Guardando...</span>
+          <svg *ngIf="!isLoading" class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          <div *ngIf="isLoading" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
         </button>
 
         <button *ngIf="currentStep === 4" type="button"
