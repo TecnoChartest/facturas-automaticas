@@ -131,19 +131,18 @@ export class StepperComponent implements OnInit {
     }
 
     const facturaData = this.validarDataComponent.getFormData();
+    const clienteData = this.validarDataComponent.getClienteData(); // Nuevo método que debes crear
 
-    // Crear FormData para enviar tanto los datos como el archivo
     const formData = new FormData();
-
     formData.append('facturaData', JSON.stringify(facturaData));
-
+    formData.append('clienteData', JSON.stringify(clienteData));
     formData.append('file', this.selectedFile, this.selectedFile.name);
 
     this.isLoading = true;
 
-    this.subirFacturaPG.crearFacturaConArchivo(formData).subscribe({
+    this.subirFacturaPG.crearFacturaConCliente(formData).subscribe({
       next: (response: any) => {
-        console.log('Factura y archivo guardados:');
+        console.log('Factura y cliente guardados:');
         this.isLoading = false;
 
         if (response.success) {
@@ -156,7 +155,7 @@ export class StepperComponent implements OnInit {
       error: (error: any) => {
         console.error('Error al guardar:', error);
         this.isLoading = false;
-        alert('Error al guardar la factura. Intenta nuevamente.');
+        alert('Error al guardar la factura y cliente. Intenta nuevamente.');
       },
     });
   }

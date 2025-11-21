@@ -2,7 +2,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FacturasModule } from './facturas/facturas.module'; // Importa el módulo, no las entidades/controladores individuales
+import { FacturasModule } from './facturas/facturas.module';
+import { ClientesModule } from './clientes/clientes.module';
+import { ProductosModule } from './productos/productos.module';
+import { FacturasDetalleModule } from './facturas-detalle/facturas-detalle.module';
 
 @Module({
   imports: [
@@ -23,6 +26,9 @@ import { FacturasModule } from './facturas/facturas.module'; // Importa el módu
       inject: [ConfigService],
     }),
     FacturasModule,
+    ClientesModule,
+    ProductosModule,
+    FacturasDetalleModule,
   ],
   controllers: [],
   providers: [],

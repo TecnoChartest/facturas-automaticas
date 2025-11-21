@@ -1,80 +1,46 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+// dto/create-factura.dto.ts
 import {
-  IsDate,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
   IsString,
-  Length,
+  IsInt,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsNotEmpty,
   Min,
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
 export class CreateFacturaDto {
-  @IsString()
-  @IsNotEmpty()
-  id: string;
+  @IsInt()
+  id: number;
 
-  @IsString()
-  @IsNotEmpty()
-  productos: string;
+  @IsInt()
+  @Min(1, { message: 'El ID del cliente es obligatorio' })
+  id_cliente: number;
 
   @IsDate()
-  @Type(() => Date)
-  @IsNotEmpty()
   fechaGeneracion: Date;
 
   @IsDate()
-  @Type(() => Date)
-  @IsNotEmpty()
   fechaVencimiento: Date;
 
-  @IsInt()
-  @Min(0)
-  @IsNotEmpty()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0, { message: 'El total bruto debe ser mayor o igual a 0' })
   totalBruto: number;
 
-  @IsInt()
-  @Min(0)
   @IsOptional()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0, { message: 'El total IVA debe ser mayor o igual a 0' })
   totalIva?: number;
 
-  @IsInt()
-  @Min(0)
-  @IsNotEmpty()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0, { message: 'El total a pagar debe ser mayor o igual a 0' })
   totalPagar: number;
 
   @IsString()
-  @Length(1, 50)
-  @IsNotEmpty()
+  @IsOptional()
   metodoPago: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'El path es obligatorio' })
   path: string;
-
-  @IsString()
-  @Length(1, 50)
-  @IsNotEmpty()
-  nombreCliente: string;
-
-  @IsString()
-  @Length(1, 50)
-  @IsNotEmpty()
-  cedula: string;
-
-  @IsString()
-  @Length(1, 250)
-  @IsNotEmpty()
-  direccion: string;
-
-  @IsString()
-  @Length(1, 50)
-  @IsNotEmpty()
-  telefono: string;
-
-  @IsString()
-  @Length(1, 50)
-  @IsNotEmpty()
-  ciudad: string;
 }

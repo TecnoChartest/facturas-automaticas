@@ -1,46 +1,57 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Cliente } from 'src/clientes/entities/cliente.entity';
+import { FacturaDetalle } from 'src/facturas-detalle/entities/facturas-detalle.entity';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+  PrimaryColumn,
+} from 'typeorm';
 
-@Entity({ name: 'factura', schema: 'public' })
+@Entity({ schema: 'public', name: 'factura' })
 export class Factura {
-  @PrimaryColumn({ type: 'text' })
-  id: string;
+  @PrimaryColumn()
+  id: number;
 
-  @Column({ type: 'text' })
-  productos: string;
+  @Column('int')
+  id_cliente: number;
 
-  @Column({ type: 'date', name: 'fecha_generacion' })
+  @Column({
+    type: 'date',
+    default: () => 'CURRENT_DATE',
+    nullable: false,
+    name: 'fecha_generacion',
+  })
   fechaGeneracion: Date;
 
-  @Column({ type: 'date', name: 'fecha_vencimiento' })
+  @Column({
+    type: 'date',
+    default: () => 'CURRENT_DATE',
+    nullable: false,
+    name: 'fecha_vencimiento',
+  })
   fechaVencimiento: Date;
 
-  @Column({ type: 'int', name: 'total_bruto' })
+  @Column('decimal', { precision: 14, scale: 2 })
   totalBruto: number;
 
-  @Column({ type: 'int', name: 'total_iva', nullable: true })
+  @Column('decimal', { precision: 14, scale: 2, nullable: true })
   totalIva: number;
 
-  @Column({ type: 'int', name: 'total_pagar' })
+  @Column('decimal', { precision: 14, scale: 2 })
   totalPagar: number;
 
-  @Column({ type: 'varchar', length: 50, name: 'metodo_pago' })
+  @Column('varchar', { length: 50 })
   metodoPago: string;
 
-  @Column({ type: 'text' })
+  @Column('text')
   path: string;
 
-  @Column({ type: 'varchar', length: 50, name: 'nombre_cliente' })
-  nombreCliente: string;
+  @ManyToOne(() => Cliente, (cliente) => cliente.facturas)
+  @JoinColumn({ name: 'id_cliente' })
+  cliente: Cliente;
 
-  @Column({ type: 'varchar', length: 50 })
-  cedula: string;
-
-  @Column({ type: 'varchar', length: 250 })
-  direccion: string;
-
-  @Column({ type: 'varchar', length: 50 })
-  telefono: string;
-
-  @Column({ type: 'varchar', length: 50 })
-  ciudad: string;
+  @OneToMany(() => FacturaDetalle, (detalle) => detalle.factura)
+  detalles: FacturaDetalle[];
 }
