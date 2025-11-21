@@ -1,46 +1,46 @@
-/* eslint-disable prettier/prettier */
+// dto/create-factura.dto.ts
 import {
-  IsDateString,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
   IsString,
+  IsInt,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsNotEmpty,
+  Min,
 } from 'class-validator';
 
 export class CreateFacturaDto {
-
-  @IsString()
-  id: string;
+  @IsInt()
+  id: number;
 
   @IsInt()
-  idUsuario: number;
+  @Min(1, { message: 'El ID del cliente es obligatorio' })
+  id_cliente: number;
 
-  @IsDateString()
-  fechaGeneracion: string;
+  @IsDate()
+  fechaGeneracion: Date;
 
-  @IsDateString()
-  fechaExpedicion: string;
+  @IsDate()
+  fechaVencimiento: Date;
 
-  @IsDateString()
-  fechaVencimiento: string;
-
-  @IsNotEmpty()
-  productos: any;
-
-  @IsString()
-  metodoPago: string;
-
-  @IsInt()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0, { message: 'El total bruto debe ser mayor o igual a 0' })
   totalBruto: number;
 
   @IsOptional()
-  @IsInt()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0, { message: 'El total IVA debe ser mayor o igual a 0' })
   totalIva?: number;
 
-  @IsInt()
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @Min(0, { message: 'El total a pagar debe ser mayor o igual a 0' })
   totalPagar: number;
 
   @IsString()
-  path: string;
+  @IsOptional()
+  metodoPago: string;
 
+  @IsString()
+  @IsNotEmpty({ message: 'El path es obligatorio' })
+  path: string;
 }
