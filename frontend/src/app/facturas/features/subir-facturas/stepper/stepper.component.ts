@@ -32,9 +32,7 @@ export class StepperComponent implements OnInit {
     this.subirFacturaForm = new FormGroup({ factura: this.factura });
   }
 
-  ngOnInit(): void {
-    // Inicialización si es necesaria
-  }
+  ngOnInit(): void {}
 
   onFileSelected(event: any): void {
     const files: FileList | null = event.target.files;
@@ -42,7 +40,6 @@ export class StepperComponent implements OnInit {
     if (files && files.length > 0) {
       const file: File = files[0];
 
-      // Validar tipo de archivo
       const fileType = file.type;
       const isValidType = fileType.startsWith('image/') || fileType === 'application/pdf';
 
@@ -90,10 +87,9 @@ export class StepperComponent implements OnInit {
       this.subirFactura.postFactura(formData).subscribe(
         (response) => {
           this.procesamientoResultado = response;
-          this.jsonData_n8n = response; // Asigna los datos para el componente hijo
+          this.jsonData_n8n = response;
           this.isLoading = false;
 
-          // Avanza automáticamente al paso 3 cuando se complete el procesamiento
           this.currentStep = 3;
           this.cdRef.detectChanges();
         },
@@ -101,37 +97,32 @@ export class StepperComponent implements OnInit {
           console.error('Error al subir el archivo:', error);
           this.isLoading = false;
           alert('Error al procesar la factura. Por favor, intenta nuevamente.');
-          // Opcional: regresar al paso 1 en caso de error
           this.currentStep = 1;
         }
       );
     }
   }
 
-  // Método para obtener el nombre del archivo de forma segura
   getFileName(): string {
     return this.selectedFile ? this.selectedFile.name : 'Ningún archivo seleccionado';
   }
 
-  // Verificar si podemos avanzar al siguiente paso
   canProceedToNextStep(): boolean {
     if (this.currentStep === 1) {
       return this.selectedFile !== null;
     } else if (this.currentStep === 2) {
-      // En el paso 2, no permitir avanzar manualmente - se avanza automáticamente
       return false;
     }
     return true;
   }
 
-  // Método para guardar la factura
   onGuardarFactura(): void {
     if (!this.validarDataComponent || !this.selectedFile) {
       return;
     }
 
     const facturaData = this.validarDataComponent.getFormData();
-    const clienteData = this.validarDataComponent.getClienteData(); // Nuevo método que debes crear
+    const clienteData = this.validarDataComponent.getClienteData();
 
     const formData = new FormData();
     formData.append('facturaData', JSON.stringify(facturaData));

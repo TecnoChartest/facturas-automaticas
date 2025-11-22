@@ -28,7 +28,7 @@ export class ClienteService {
 
   async findByCedula(cedula: number): Promise<Cliente | null> {
     return await this.clienteRepository.findOne({
-      where: { cedula },
+      where: { cedula: cedula },
     });
   }
 

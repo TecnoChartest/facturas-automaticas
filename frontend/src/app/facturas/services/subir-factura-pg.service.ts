@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment.development';
 
 export interface Factura {
   id: string;
-  productos: string;
   fechaGeneracion: Date;
   fechaVencimiento: Date;
   totalBruto: number;
@@ -18,6 +17,13 @@ export interface Factura {
   direccion: string;
   telefono: string;
   ciudad: string;
+  items?: FacturaItem[];
+}
+
+export interface FacturaItem {
+  item: string;
+  description: string;
+  cantidad: string;
 }
 
 @Injectable({
@@ -28,7 +34,6 @@ export class SubirFacturaPg {
 
   crearFacturaConCliente(formData: FormData): Observable<any> {
     return new Observable((observer) => {
-      // Primero crear/verificar el cliente
       const clienteData = JSON.parse(formData.get('clienteData') as string);
 
       this.crearCliente(clienteData).subscribe({
@@ -40,12 +45,10 @@ export class SubirFacturaPg {
           }
         },
         error: (error: HttpErrorResponse) => {
-          // Si el error es 409 (cliente ya existe), entonces buscamos el cliente por cédula
           if (error.status === 409 && clienteData.cedula) {
             this.buscarClientePorCedula(clienteData.cedula).subscribe({
               next: (clienteExistente: any) => {
                 if (clienteExistente.success) {
-                  // Usamos el ID del cliente existente
                   this.continuarConFactura(formData, clienteExistente.data.id, observer);
                 } else {
                   observer.error('No se pudo encontrar el cliente existente');
@@ -63,34 +66,27 @@ export class SubirFacturaPg {
     });
   }
 
-  buscarClientePorCedula(cedula: number): Observable<any> {
+  buscarClientePorCedula(cedula: string): Observable<any> {
     return this.http.get(`${environment.SUBIR_CLIENTE_pg}/cedula/${cedula}`);
   }
 
   continuarConFactura(formData: FormData, idCliente: number, observer: any) {
-    // Ahora crear la factura con el ID del cliente
     const facturaData = JSON.parse(formData.get('facturaData') as string);
     facturaData.id_cliente = idCliente;
 
+    const { items, ...facturaDataSinItems } = facturaData;
+
     const facturaFormData = new FormData();
-    facturaFormData.append('facturaData', JSON.stringify(facturaData));
+    facturaFormData.append('facturaData', JSON.stringify(facturaDataSinItems));
     facturaFormData.append('file', formData.get('file') as File);
 
     this.crearFacturaConArchivo(facturaFormData).subscribe({
       next: async (facturaResponse: any) => {
         if (facturaResponse.success) {
-          // Procesar productos y detalles
           try {
-            const productosArray = facturaData.productos.split(',').map((p: string) => p.trim());
-            const cantidadesArray = facturaData.cantidad
-              .split(',')
-              .map((c: string) => parseInt(c.trim(), 10));
-
-            await this.procesarProductosYDetalles(
-              productosArray,
-              cantidadesArray,
-              facturaResponse.data.id
-            );
+            if (items && Array.isArray(items)) {
+              await this.procesarItems(items, facturaResponse.data.id);
+            }
 
             observer.next(facturaResponse);
             observer.complete();
@@ -108,45 +104,35 @@ export class SubirFacturaPg {
   }
 
   buscarProductoPorNombre(nombre: string): Observable<any> {
-    // Usar query parameter en lugar de path parameter
     return this.http.get(
       `${environment.SUBIR_PRODUCTO_pg}/buscar?nombre=${encodeURIComponent(nombre)}`
     );
   }
 
-  // Y actualizar el método procesarProductosYDetalles para que maneje mejor los errores
-  async procesarProductosYDetalles(
-    productos: string[],
-    cantidades: number[],
-    idFactura: number
-  ): Promise<void> {
-    // Validar que productos y cantidades tengan la misma longitud
-    if (productos.length !== cantidades.length) {
-      throw new Error('La cantidad de productos y cantidades no coincide');
-    }
+  async procesarItems(items: any[], idFactura: number): Promise<void> {
+    for (const item of items) {
+      const nombreProducto = item.description;
+      const cantidad = parseInt(item.cantidad, 10);
 
-    for (let i = 0; i < productos.length; i++) {
-      const nombreProducto = productos[i];
-      const cantidad = cantidades[i];
-
-      // Validar que el nombre del producto no esté vacío
       if (!nombreProducto || nombreProducto.trim() === '') {
-        console.warn(`Producto en posición ${i} está vacío, saltando...`);
+        console.warn(`Producto con item ${item.item} está vacío, saltando...`);
+        continue;
+      }
+
+      if (isNaN(cantidad) || cantidad <= 0) {
+        console.warn(`Cantidad inválida para producto "${nombreProducto}", saltando...`);
         continue;
       }
 
       try {
-        // Buscar producto por nombre
         const productoResponse = await this.buscarProductoPorNombre(nombreProducto).toPromise();
 
         let productoId: number;
 
         if (productoResponse && productoResponse.success && productoResponse.data) {
-          // Producto encontrado
           productoId = productoResponse.data.id;
           console.log(`Producto encontrado: ${nombreProducto} con ID: ${productoId}`);
         } else {
-          // Crear nuevo producto
           console.log(`Creando nuevo producto: ${nombreProducto}`);
           const nuevoProductoResponse = await this.crearProducto({
             nombre: nombreProducto.trim(),
@@ -160,7 +146,6 @@ export class SubirFacturaPg {
           }
         }
 
-        // Crear detalle de factura
         const detalleData = {
           id_factura: idFactura,
           id_producto: productoId,
@@ -171,8 +156,6 @@ export class SubirFacturaPg {
         console.log(`Detalle creado para producto ID: ${productoId} con cantidad: ${cantidad}`);
       } catch (error) {
         console.error(`Error procesando producto "${nombreProducto}":`, error);
-        // Decidir si continuar con los siguientes productos o lanzar error
-        // throw error; // Descomenta si quieres que falle todo el proceso
       }
     }
   }
