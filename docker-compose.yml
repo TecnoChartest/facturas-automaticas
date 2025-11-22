@@ -2,14 +2,54 @@ services:
   postgres:
     image: postgres:15-alpine
     container_name: postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: facturas_automaticas_DB
       POSTGRES_USER: chartest
       POSTGRES_PASSWORD: chartest
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - '5432:5432'
+      - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U chartest -d facturas_automaticas_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-volumes:
-  postgres_data:
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@facturas.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+  metabase:
+    image: metabase/metabase:latest
+    restart: unless-stopped
+    container_name: metabase
+    ports:
+      - 3000:3000
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: facturas_automaticas_DB
+      MB_DB_PORT: 5432
+      MB_DB_USER: chartest
+      MB_DB_PASS: chartest
+      MB_DB_HOST: postgres
+      MB_JETTY_HOST: 0.0.0.0
+      JAVA_TIMEZONE: America/Bogota
+    volumes:
+      - ./metabase-data:/metabase-data
+    depends_on:
+      postgres:
+        condition: service_healthy
