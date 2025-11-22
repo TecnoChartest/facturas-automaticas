@@ -49,18 +49,12 @@ export class ClienteController {
   }
 
   @Get('cedula/:cedula')
-  async findByCedula(@Param('cedula') cedula: string, @Res() res: express.Response) {
+  async findByCedula(
+    @Param('cedula') cedula: number,
+    @Res() res: express.Response,
+  ) {
     try {
-      // Convertir a número y validar
-      const cedulaNumber = parseInt(cedula, 10);
-      if (isNaN(cedulaNumber)) {
-        return res.status(HttpStatus.BAD_REQUEST).json({
-          success: false,
-          message: 'La cédula debe ser un número válido',
-        });
-      }
-
-      const cliente = await this.clienteService.findByCedula(cedulaNumber);
+      const cliente = await this.clienteService.findByCedula(cedula);
 
       if (cliente) {
         return res.status(HttpStatus.OK).json({
