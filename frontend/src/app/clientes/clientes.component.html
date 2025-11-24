@@ -1,0 +1,53 @@
+<div class="p-5">
+  <h2 class="text-2xl font-bold mb-4">Clientes</h2>
+
+  <!-- Buscador -->
+  <input
+    type="text"
+    [formControl]="searchControl"
+    placeholder="Buscar cliente por nombre"
+    class="border border-gray-300 rounded p-2 mb-4 w-full md:w-1/2 text-black"
+  />
+
+  <!-- Formulario agregar cliente (inputs más pequeños) -->
+  <form [formGroup]="addForm" (ngSubmit)="addCliente()" class="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+    <input type="text" formControlName="nombre_cliente" placeholder="Nombre" class="border p-1 rounded w-full text-sm"/>
+    <input type="text" formControlName="ciudad" placeholder="Ciudad" class="border p-1 rounded w-full text-sm"/>
+    <input type="number" formControlName="cedula" placeholder="Cédula" class="border p-1 rounded w-full text-sm"/>
+    <input type="text" formControlName="direccion" placeholder="Dirección" class="border p-1 rounded w-full text-sm"/>
+    <input type="text" formControlName="telefono" placeholder="Teléfono" class="border p-1 rounded w-full text-sm"/>
+    <input type="email" formControlName="email" placeholder="Email" class="border p-1 rounded w-full text-sm"/>
+    <div class="col-span-full">
+      <button type="submit" [disabled]="loading" class="bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+        {{ loading ? 'Agregando...' : 'Agregar Cliente' }}
+      </button>
+      <p *ngIf="error" class="text-red-500 text-sm mt-1">{{ error }}</p>
+    </div>
+  </form>
+
+  <!-- Tabla de clientes con scroll -->
+  <div class="overflow-x-auto overflow-y-auto max-h-[400px] border border-gray-300 rounded">
+    <table class="min-w-full border-collapse text-black text-sm">
+      <thead class="bg-gray-200 sticky top-0">
+        <tr>
+          <th class="border p-2">Cédula</th>
+          <th class="border p-2">Nombre</th>
+          <th class="border p-2">Ciudad</th>
+          <th class="border p-2">Dirección</th>
+          <th class="border p-2">Teléfono</th>
+          <th class="border p-2">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of filteredClientes" class="hover:bg-gray-100">
+          <td class="border p-2">{{ cliente.cedula }}</td>
+          <td class="border p-2">{{ cliente.nombre_cliente }}</td>
+          <td class="border p-2">{{ cliente.ciudad }}</td>
+          <td class="border p-2">{{ cliente.direccion }}</td>
+          <td class="border p-2">{{ cliente.telefono }}</td>
+          <td class="border p-2">{{ cliente.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

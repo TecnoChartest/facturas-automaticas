@@ -1,0 +1,70 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white rounded-3xl shadow-md p-10 w-full max-w-md">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-6">Crear Cuenta</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-3">
+      <input
+        type="number"
+        formControlName="cedula"
+        placeholder="Cédula (opcional)"
+        class="border border-gray-300 rounded-lg p-3 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-gray-900"
+      />
+      <div *ngIf="hasError('cedula','min')" class="text-red-500 text-sm">Debe ser mayor a 1.000.000</div>
+
+      <input
+        type="text"
+        formControlName="nombre_cliente"
+        placeholder="Nombre completo"
+        class="border border-gray-300 rounded-lg p-3 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-gray-900"
+      />
+      <div *ngIf="hasError('nombre_cliente')" class="text-red-500 text-sm">Este campo es obligatorio</div>
+
+      <input
+        type="text"
+        formControlName="ciudad"
+        placeholder="Ciudad"
+        class="border border-gray-300 rounded-lg p-3 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-gray-900"
+      />
+      <div *ngIf="hasError('ciudad')" class="text-red-500 text-sm">Este campo es obligatorio</div>
+
+      <input
+        type="text"
+        formControlName="direccion"
+        placeholder="Dirección (opcional)"
+        class="border border-gray-300 rounded-lg p-3 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-gray-900"
+      />
+
+      <input
+        type="text"
+        formControlName="telefono"
+        placeholder="Teléfono (opcional)"
+        class="border border-gray-300 rounded-lg p-3 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-gray-900"
+      />
+
+      <input
+        type="password"
+        formControlName="contraseña"
+        placeholder="Contraseña"
+        class="border border-gray-300 rounded-lg p-3 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-gray-900"
+      />
+      <div *ngIf="hasError('contraseña','minlength')" class="text-red-500 text-sm">Mínimo 6 caracteres</div>
+
+      <div *ngIf="error" class="text-red-500 text-center mt-2">{{ error }}</div>
+
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="bg-blue-600 text-white rounded-lg p-3 font-semibold hover:bg-blue-700 transition disabled:opacity-50 mt-2"
+      >
+        {{ loading ? 'Cargando...' : 'Registrarse' }}
+      </button>
+    </form>
+
+    <p class="text-center text-gray-500 mt-5">
+      ¿Ya tienes cuenta?
+      <span (click)="goToLogin()" class="text-blue-600 font-semibold hover:underline cursor-pointer">
+        Inicia sesión
+      </span>
+    </p>
+  </div>
+</div>

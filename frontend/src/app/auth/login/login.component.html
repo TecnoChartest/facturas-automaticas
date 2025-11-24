@@ -1,0 +1,37 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white rounded-3xl shadow-md p-10 w-full max-w-md">
+    <h2 class="text-3xl font-bold text-gray-900 text-center mb-6">Iniciar Sesión</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
+      <input
+        type="text"
+        formControlName="nombre_cliente"
+        placeholder="Nombre de usuario"
+        class="border border-gray-300 rounded-lg p-3 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-gray-900"
+      />
+      <input
+        type="password"
+        formControlName="contraseña"
+        placeholder="Contraseña"
+        class="border border-gray-300 rounded-lg p-3 focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none text-gray-900"
+      />
+
+      <button
+        type="submit"
+        [disabled]="loading"
+        class="bg-blue-600 text-white rounded-lg p-3 font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+      >
+        {{ loading ? 'Cargando...' : 'Entrar' }}
+      </button>
+
+      <p *ngIf="error" class="text-red-500 text-center mt-2">{{ error }}</p>
+    </form>
+
+    <p class="text-center text-gray-500 mt-5">
+      ¿No tienes cuenta?
+      <span (click)="goToRegister()" class="text-blue-600 font-semibold hover:underline cursor-pointer">
+        Regístrate
+      </span>
+    </p>
+  </div>
+</div>
