@@ -37,6 +37,10 @@ export class SubirFacturaPg {
     return new Observable((observer) => {
       const clienteData = JSON.parse(formData.get('clienteData') as string);
 
+      if (clienteData.cedula) {
+        clienteData.cedula = clienteData.cedula.toString();
+      }
+
       this.crearCliente(clienteData).subscribe({
         next: (clienteResponse: any) => {
           if (clienteResponse.success) {
@@ -50,6 +54,7 @@ export class SubirFacturaPg {
             this.buscarClientePorCedula(clienteData.cedula).subscribe({
               next: (clienteExistente: any) => {
                 if (clienteExistente.success) {
+                  console.log(clienteData.cedula);
                   this.continuarConFactura(formData, clienteExistente.data.id, observer);
                 } else {
                   observer.error('No se pudo encontrar el cliente existente');
@@ -127,6 +132,7 @@ export class SubirFacturaPg {
 
       try {
         const productoResponse = await this.buscarProductoPorNombre(nombreProducto).toPromise();
+        console.log(productoResponse);
 
         let productoId: number;
 
@@ -170,7 +176,6 @@ export class SubirFacturaPg {
   }
 
   crearCliente(clienteData: any): Observable<any> {
-    console.log(clienteData);
     return this.http.post(`${environment.SUBIR_CLIENTE_pg}`, clienteData);
   }
 

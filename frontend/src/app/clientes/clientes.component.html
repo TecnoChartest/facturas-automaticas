@@ -19,6 +19,7 @@
           <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Dirección</th>
           <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Teléfono</th>
           <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Ciudad</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -30,11 +31,36 @@
           <td class="py-4 px-4 text-sm text-gray-700">{{ cliente.direccion || 'N/A' }}</td>
           <td class="py-4 px-4 text-sm text-gray-700">{{ cliente.telefono || 'N/A' }}</td>
           <td class="py-4 px-4 text-sm text-gray-700">{{ cliente.ciudad }}</td>
+          <td class="py-4 px-4">
+            <div class="flex space-x-2">
+              <!-- Botón Editar -->
+              <button (click)="editarCliente(cliente)"
+                class="flex items-center text-green-600 hover:text-green-800 transition-colors duration-200"
+                title="Editar cliente">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Editar
+              </button>
+
+              <!-- Botón Eliminar -->
+              <button (click)="eliminarCliente(cliente.id, cliente.nombre_cliente)"
+                class="flex items-center text-red-600 hover:text-red-800 transition-colors duration-200"
+                title="Eliminar cliente">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                Eliminar
+              </button>
+            </div>
+          </td>
         </tr>
 
         <!-- Empty State -->
         <tr *ngIf="clientes.length === 0">
-          <td colspan="6" class="py-8 text-center text-gray-500">
+          <td colspan="7" class="py-8 text-center text-gray-500">
             No hay clientes registrados
           </td>
         </tr>

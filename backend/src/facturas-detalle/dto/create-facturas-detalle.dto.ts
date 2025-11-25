@@ -2,9 +2,6 @@ import { IsInt, Min } from 'class-validator';
 
 export class CreateFacturaDetalleDto {
   @IsInt()
-  id: number;
-
-  @IsInt()
   @Min(1, { message: 'El ID de la factura es obligatorio' })
   id_factura: number;
 

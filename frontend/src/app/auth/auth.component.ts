@@ -26,8 +26,8 @@ export class AuthComponent {
         if (!userCred.user.emailVerified) {
           this.message = 'Por favor verifica tu correo electrónico antes de entrar.';
         } else {
-          const token = await this.authService.getToken();
-          console.log(token);
+          // const token = await this.authService.getToken();
+
         }
       } else {
         await this.authService.register(this.email, this.password);

@@ -4,34 +4,25 @@ import {
   Controller,
   Post,
   Body,
-  HttpStatus,
   Res,
   Get,
   Param,
-  Delete,
   UseInterceptors,
   UploadedFile,
+  Put,
+  Delete,
+  HttpStatus,
   HttpException,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiConsumes,
-  ApiBody,
-  ApiParam,
-} from '@nestjs/swagger';
-import type { Response } from 'express';
-import { CreateFacturaDto } from './dto/create-factura.dto';
 import { FacturasService } from './facturas.service';
 import { FileService } from './file.service';
+import { CreateFacturaDto } from './dto/create-factura.dto';
+import { UpdateFacturaDto } from './dto/update-factura.dto';
 import { Factura } from './entities/factura.entity';
-import { Public } from '../auth/public.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import express from 'express';
+import { Public } from 'src/auth/public.decorator';
 
-@ApiTags('Facturas')
-@ApiBearerAuth('firebase-auth')
 @Controller('facturas')
 export class FacturasController {
   constructor(
@@ -40,21 +31,9 @@ export class FacturasController {
   ) {}
 
   @Post()
-  @ApiOperation({
-    summary: 'Crear una nueva factura',
-    description: 'Crea una factura sin archivo adjunto',
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'Factura creada exitosamente',
-    type: Factura,
-  })
-  @ApiResponse({ status: 400, description: 'Datos inválidos' })
-  @ApiResponse({ status: 401, description: 'No autorizado - Token inválido' })
-  @ApiResponse({ status: 409, description: 'Factura duplicada' })
   async create(
     @Body() createFacturaDto: CreateFacturaDto,
-    @Res() res: Response,
+    @Res() res: express.Response,
   ) {
     try {
       const nuevaFactura = await this.facturaService.create(createFacturaDto);
@@ -74,44 +53,10 @@ export class FacturasController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  @ApiOperation({
-    summary: 'Crear factura con archivo',
-    description: 'Crea una factura y sube el archivo PDF o imagen',
-  })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      required: ['file', 'facturaData'],
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-          description: 'Archivo PDF o imagen de la factura',
-        },
-        facturaData: {
-          type: 'string',
-          description: 'Datos de la factura en formato JSON stringificado',
-          example: JSON.stringify({
-            id: 1001,
-            id_cliente: 1,
-            fechaGeneracion: '2025-01-20',
-            fechaVencimiento: '2025-02-20',
-            totalBruto: 1000,
-            totalIva: 190,
-            totalPagar: 1190,
-            metodoPago: 'Efectivo',
-          }),
-        },
-      },
-    },
-  })
-  @ApiResponse({ status: 201, description: 'Factura y archivo guardados' })
-  @ApiResponse({ status: 401, description: 'No autorizado' })
   async createWithFile(
     @UploadedFile() file: Express.Multer.File,
     @Body('facturaData') facturaDataString: string,
-    @Res() res: Response,
+    @Res() res: express.Response,
   ) {
     try {
       const createFacturaDto: CreateFacturaDto = JSON.parse(facturaDataString);
@@ -134,13 +79,6 @@ export class FacturasController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Listar todas las facturas' })
-  @ApiResponse({
-    status: 200,
-    description: 'Lista de facturas con clientes y detalles',
-    type: [Factura],
-  })
-  @ApiResponse({ status: 401, description: 'No autorizado' })
   async findAll(): Promise<Factura[]> {
     try {
       const facturas = await this.facturaService.findAll();
@@ -158,34 +96,54 @@ export class FacturasController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obtener una factura por ID' })
-  @ApiParam({ name: 'id', description: 'ID de la factura', example: 1001 })
-  @ApiResponse({
-    status: 200,
-    description: 'Factura encontrada',
-    type: Factura,
-  })
-  @ApiResponse({ status: 404, description: 'Factura no encontrada' })
-  @ApiResponse({ status: 401, description: 'No autorizado' })
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.facturaService.findOne(+id);
   }
 
-  @Delete(':id')
-  @ApiOperation({ summary: 'Eliminar una factura' })
-  @ApiParam({ name: 'id', description: 'ID de la factura a eliminar' })
-  @ApiResponse({ status: 200, description: 'Factura eliminada' })
-  @ApiResponse({ status: 404, description: 'Factura no encontrada' })
-  @ApiResponse({ status: 401, description: 'No autorizado' })
-  remove(@Param('id') id: string) {
-    return this.facturaService.remove(+id);
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateFacturaDto: UpdateFacturaDto,
+    @Res() res: express.Response,
+  ) {
+    try {
+      const facturaActualizada = await this.facturaService.update(
+        +id,
+        updateFacturaDto,
+      );
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Factura actualizada exitosamente',
+        data: facturaActualizada,
+      });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'Error al actualizar la factura',
+        error: error.message,
+      });
+    }
   }
 
-  // Ejemplo de endpoint público (sin autenticación)
+  @Delete(':id')
+  async remove(@Param('id') id: string, @Res() res: express.Response) {
+    try {
+      await this.facturaService.remove(+id);
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Factura eliminada exitosamente',
+      });
+    } catch (error) {
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'Error al eliminar la factura',
+        error: error.message,
+      });
+    }
+  }
+
   @Public()
   @Get('health/check')
-  @ApiOperation({ summary: 'Health check (público)' })
-  @ApiResponse({ status: 200, description: 'Servicio funcionando' })
   healthCheck() {
     return { status: 'ok', timestamp: new Date().toISOString() };
   }

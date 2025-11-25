@@ -27,14 +27,26 @@ export interface Factura {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MostrarFactura {
   private apiUrl = environment.SUBIR_FACTURA_pg;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getFacturas(): Observable<Factura[]> {
     return this.http.get<Factura[]>(this.apiUrl);
+  }
+
+  eliminarFactura(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  actualizarFactura(id: number, factura: any): Observable<Factura> {
+    return this.http.put<Factura>(`${this.apiUrl}/${id}`, factura);
+  }
+
+  obtenerFacturaPorId(id: number): Observable<Factura> {
+    return this.http.get<Factura>(`${this.apiUrl}/${id}`);
   }
 }

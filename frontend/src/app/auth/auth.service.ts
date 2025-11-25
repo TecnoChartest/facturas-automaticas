@@ -20,7 +20,6 @@ export class AuthService {
   public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
 
   constructor() {
-    // Escuchar cambios en el estado de autenticación
     onAuthStateChanged(this.auth, (user) => {
       this.currentUserSubject.next(user);
       if (user) {
@@ -54,10 +53,8 @@ export class AuthService {
       try {
         const token = await user.getIdToken(true);
         localStorage.setItem('firebase_token', token);
-        console.log('✅ Token actualizado');
         return token;
       } catch (error) {
-        console.error('❌ Error al obtener token:', error);
         return null;
       }
     }
@@ -65,10 +62,8 @@ export class AuthService {
   }
 
   async getToken(): Promise<string | null> {
-    // Intentar obtener de localStorage primero
     let token = localStorage.getItem('firebase_token');
 
-    // Si no existe o está cerca de expirar, renovar
     if (!token && this.auth.currentUser) {
       token = await this.refreshToken();
     }
@@ -90,28 +85,7 @@ export class AuthService {
       await signOut(this.auth);
       this.currentUserSubject.next(null);
       this.router.navigate(['/login']);
-      console.log('✅ Sesión cerrada');
     } catch (error) {
-      console.error('❌ Error al cerrar sesión:', error);
-    }
-  }
-
-  // Método útil para debugging
-  async logTokenInfo() {
-    const token = await this.getToken();
-    if (token) {
-      console.log('🔑 Token actual:', token.substring(0, 50) + '...');
-
-      // Decodificar payload (solo para debugging)
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        console.log('📋 Token expira en:', new Date(payload.exp * 1000));
-        console.log('👤 User ID:', payload.user_id);
-      } catch (e) {
-        console.error('Error decodificando token');
-      }
-    } else {
-      console.log('❌ No hay token disponible');
     }
   }
 }

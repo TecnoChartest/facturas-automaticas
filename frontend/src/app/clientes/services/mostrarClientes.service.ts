@@ -31,4 +31,17 @@ export class MostrarClientes {
   getClienteByCedula(cedula: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/cedula/${cedula}`);
   }
+
+  // Nuevos métodos para editar y eliminar
+  actualizarCliente(id: number, cliente: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, cliente);
+  }
+
+  eliminarCliente(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  obtenerClientePorId(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.apiUrl}/${id}`);
+  }
 }

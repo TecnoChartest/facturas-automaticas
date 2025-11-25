@@ -35,13 +35,49 @@ export default class FacturasTableComponent implements OnInit {
     });
   }
 
+  eliminarFactura(id: number): void {
+    if (
+      confirm('¿Está seguro de que desea eliminar esta factura? Esta acción no se puede deshacer.')
+    ) {
+      this.mostrarFactura.eliminarFactura(id).subscribe({
+        next: () => {
+          alert('Factura eliminada exitosamente');
+          this.cargarFacturas();
+        },
+        error: (error) => {
+          console.error('Error eliminando factura:', error);
+          alert('Error al eliminar la factura');
+        },
+      });
+    }
+  }
+
+  editarFactura(factura: Factura): void {
+    const nuevoMetodoPago = prompt('Nuevo método de pago:', factura.metodoPago);
+
+    if (nuevoMetodoPago !== null) {
+      const datosActualizados = {
+        metodoPago: nuevoMetodoPago,
+      };
+
+      this.mostrarFactura.actualizarFactura(factura.id, datosActualizados).subscribe({
+        next: () => {
+          alert('Factura actualizada exitosamente');
+          this.cargarFacturas(); // Recargar la lista
+        },
+        error: (error) => {
+          console.error('Error actualizando factura:', error);
+          alert('Error al actualizar la factura');
+        },
+      });
+    }
+  }
+
   verArchivo(path: string): void {
-    // El path ya debería ser el nombre del archivo, ej: "1764032636424-627090443.jpeg"
     const fullPath = `http://localhost:4000/${path}`;
     window.open(fullPath, '_blank');
   }
 
-  // Alternativa: Modal para previsualización (más complejo pero mejor UX)
   previsualizarArchivo(path: string): void {
     this.selectedFile = `http://localhost:4000/${path}`;
     this.showModal = true;

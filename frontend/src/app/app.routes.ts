@@ -31,12 +31,6 @@ export const routes: Routes = [
         path: 'clientes',
         loadComponent: () => import('./clientes/clientes.component'),
       },
-      // Ruta por defecto dentro del dashboard (opcional)
-      {
-        path: '',
-        redirectTo: 'estadisticas',
-        pathMatch: 'full',
-      },
     ],
   },
   {
