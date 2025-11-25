@@ -177,7 +177,6 @@ export class SubirFacturaPg {
   crearFacturaConArchivo(formData: FormData): Observable<any> {
     return this.http.post(`${environment.SUBIR_FACTURA_pg}/upload`, formData).pipe(
       catchError((error: HttpErrorResponse) => {
-
         const err = error.error;
 
         if (error.status === 409 || err?.alert || err?.message?.includes('existe')) {
@@ -188,22 +187,19 @@ export class SubirFacturaPg {
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#f59e0b',
           });
-        }
-        else if (error.status === 400) {
+        } else if (error.status === 400) {
           Swal.fire({
             icon: 'error',
             title: 'Datos incompletos',
             text: err?.message || 'Faltan datos requeridos',
           });
-        }
-        else if (error.status >= 500) {
+        } else if (error.status >= 500) {
           Swal.fire({
             icon: 'error',
             title: 'Error del servidor',
             text: 'Ya existe una factura con este número.',
           });
-        }
-        else {
+        } else {
           Swal.fire({
             icon: 'error',
             title: 'Error',

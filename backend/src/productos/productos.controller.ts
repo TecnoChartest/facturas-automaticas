@@ -15,12 +15,25 @@ import {
 import express from 'express';
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { ProductoService } from './productos.service';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Producto } from './entities/producto.entity';
 
+@ApiTags('Productos')
+@ApiBearerAuth('firebase-auth')
 @Controller('productos')
 export class ProductoController {
   constructor(private readonly productoService: ProductoService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nuevo producto' })
+  @ApiResponse({
+    status: 201,
+    description: 'Producto creado exitosamente',
+    type: Producto,
+  })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  @ApiResponse({ status: 409, description: 'Producto duplicado' })
   async create(
     @Body() createProductoDto: CreateProductoDto,
     @Res() res: express.Response,
@@ -50,11 +63,28 @@ export class ProductoController {
     }
   }
 
-  // Cambiar de @Param a @Query para evitar problemas con caracteres especiales
   @Get('buscar')
-  async findByNombre(@Query('nombre') nombre: string, @Res() res: express.Response) {
+  @ApiOperation({
+    summary: 'Buscar producto por nombre',
+    description: 'Busca un producto por su nombre (parámetro query "nombre")',
+  })
+  @ApiQuery({
+    name: 'nombre',
+    description: 'Nombre del producto a buscar',
+    required: true,
+    example: 'Café',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Resultado de la búsqueda (puede ser null si no existe)',
+    type: Producto,
+  })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
+  async findByNombre(
+    @Query('nombre') nombre: string,
+    @Res() res: express.Response,
+  ) {
     try {
-      // Decodificar el nombre por si viene codificado
       const nombreDecodificado = decodeURIComponent(nombre);
       const producto =
         await this.productoService.findByNombre(nombreDecodificado);
@@ -81,6 +111,13 @@ export class ProductoController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Listar todos los productos' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de productos',
+    type: [Producto],
+  })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
   async findAll(@Res() res: express.Response) {
     try {
       const productos = await this.productoService.findAll();

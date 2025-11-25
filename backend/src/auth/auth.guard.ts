@@ -8,13 +8,27 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { FirebaseService } from './firebase.service';
+import { IS_PUBLIC_KEY } from './public.decorator';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private firebaseService: FirebaseService) {}
+  constructor(
+    private firebaseService: FirebaseService,
+    private reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+
+    if (isPublic) {
+      return true;
+    }
+
     const request = context.switchToHttp().getRequest();
     const authHeader = request.headers.authorization;
 
@@ -24,12 +38,15 @@ export class AuthGuard implements CanActivate {
 
     const token = authHeader.split(' ')[1];
 
+    if (!token) {
+      throw new UnauthorizedException('Token inválido.');
+    }
+
     try {
-      // Verificamos el token con Firebase
       const decodedToken = await this.firebaseService
         .getAuth()
         .verifyIdToken(token);
-      // Guardamos los datos del usuario en la request por si los necesitas luego
+
       request['user'] = decodedToken;
       return true;
     } catch (error) {

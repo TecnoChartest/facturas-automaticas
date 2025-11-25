@@ -13,12 +13,33 @@ import {
 import express from 'express';
 import { CreateFacturaDetalleDto } from './dto/create-facturas-detalle.dto';
 import { FacturaDetalleService } from './facturas-detalle.service';
-
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { FacturaDetalle } from './entities/facturas-detalle.entity';
+@ApiTags('FacturaDetalle')
+@ApiBearerAuth('firebase-auth')
 @Controller('factura-detalle')
 export class FacturaDetalleController {
   constructor(private readonly facturaDetalleService: FacturaDetalleService) {}
 
   @Post()
+  @ApiOperation({
+    summary: 'Crear un detalle de factura',
+    description: 'Crea un nuevo detalle asociado a una factura',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Detalle de factura creado exitosamente',
+    type: FacturaDetalle,
+  })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
   async create(
     @Body() createFacturaDetalleDto: CreateFacturaDetalleDto,
     @Res() res: express.Response,
@@ -43,6 +64,24 @@ export class FacturaDetalleController {
   }
 
   @Post('multiple')
+  @ApiOperation({
+    summary: 'Crear múltiples detalles de factura',
+    description: 'Crea varios detalles de factura en una sola petición',
+  })
+  @ApiBody({
+    description: 'Array de detalles de factura a crear',
+    schema: {
+      type: 'array',
+      items: { $ref: '#/components/schemas/CreateFacturaDetalleDto' },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Detalles de factura creados exitosamente',
+    type: [FacturaDetalle],
+  })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
   async createMultiple(
     @Body() detalles: CreateFacturaDetalleDto[],
     @Res() res: express.Response,
@@ -66,13 +105,29 @@ export class FacturaDetalleController {
   }
 
   @Get('factura/:idFactura')
+  @ApiOperation({
+    summary: 'Obtener detalles por ID de factura',
+    description: 'Devuelve todos los detalles asociados a una factura',
+  })
+  @ApiParam({
+    name: 'idFactura',
+    description: 'ID de la factura',
+    example: 1001,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Detalles de factura obtenidos correctamente',
+    type: [FacturaDetalle],
+  })
+  @ApiResponse({ status: 404, description: 'Factura no encontrada' })
+  @ApiResponse({ status: 401, description: 'No autorizado' })
   async findByFacturaId(
-    @Param('idFactura') idFactura: number,
+    @Param('idFactura') idFactura: string,
     @Res() res: express.Response,
   ) {
     try {
-      const detalles =
-        await this.facturaDetalleService.findByFacturaId(idFactura);
+      const id = Number(idFactura);
+      const detalles = await this.facturaDetalleService.findByFacturaId(id);
 
       return res.status(HttpStatus.OK).json({
         success: true,

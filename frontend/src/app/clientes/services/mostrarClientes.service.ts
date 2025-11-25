@@ -1,7 +1,7 @@
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.development';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 export interface Cliente {
   id: number;
@@ -10,18 +10,25 @@ export interface Cliente {
   direccion: string;
   telefono: string;
   ciudad: string;
-  facturas: any[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class MostrarClientes {
-  private apiUrl = environment.SUBIR_CLIENTE_pg;
+  private apiUrl = `${environment.SUBIR_CLIENTE_pg}`;
 
   constructor(private http: HttpClient) {}
 
   getClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.apiUrl);
+  }
+
+  createCliente(cliente: Cliente): Observable<any> {
+    return this.http.post(this.apiUrl, cliente);
+  }
+
+  getClienteByCedula(cedula: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/cedula/${cedula}`);
   }
 }

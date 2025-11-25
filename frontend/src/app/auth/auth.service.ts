@@ -5,11 +5,29 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  User,
+  onAuthStateChanged,
 } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private auth: Auth = inject(Auth);
+  private router: Router = inject(Router);
+
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$: Observable<User | null> = this.currentUserSubject.asObservable();
+
+  constructor() {
+    // Escuchar cambios en el estado de autenticación
+    onAuthStateChanged(this.auth, (user) => {
+      this.currentUserSubject.next(user);
+      if (user) {
+        this.refreshToken();
+      }
+    });
+  }
 
   async register(email: string, pass: string) {
     const credential = await createUserWithEmailAndPassword(this.auth, email, pass);
@@ -18,14 +36,82 @@ export class AuthService {
   }
 
   async login(email: string, pass: string) {
-    return signInWithEmailAndPassword(this.auth, email, pass);
+    const credential = await signInWithEmailAndPassword(this.auth, email, pass);
+
+    if (!credential.user.emailVerified) {
+      throw new Error('Por favor verifica tu correo electrónico antes de continuar.');
+    }
+
+    // Guardar token
+    await this.refreshToken();
+
+    return credential;
   }
 
-  async getToken() {
-    return this.auth.currentUser?.getIdToken();
+  async refreshToken(): Promise<string | null> {
+    const user = this.auth.currentUser;
+    if (user) {
+      try {
+        const token = await user.getIdToken(true);
+        localStorage.setItem('firebase_token', token);
+        console.log('✅ Token actualizado');
+        return token;
+      } catch (error) {
+        console.error('❌ Error al obtener token:', error);
+        return null;
+      }
+    }
+    return null;
   }
 
-  logout() {
-    return signOut(this.auth);
+  async getToken(): Promise<string | null> {
+    // Intentar obtener de localStorage primero
+    let token = localStorage.getItem('firebase_token');
+
+    // Si no existe o está cerca de expirar, renovar
+    if (!token && this.auth.currentUser) {
+      token = await this.refreshToken();
+    }
+
+    return token;
+  }
+
+  getCurrentUser(): User | null {
+    return this.auth.currentUser;
+  }
+
+  isAuthenticated(): boolean {
+    return this.auth.currentUser !== null && this.auth.currentUser.emailVerified === true;
+  }
+
+  async logout() {
+    try {
+      localStorage.removeItem('firebase_token');
+      await signOut(this.auth);
+      this.currentUserSubject.next(null);
+      this.router.navigate(['/login']);
+      console.log('✅ Sesión cerrada');
+    } catch (error) {
+      console.error('❌ Error al cerrar sesión:', error);
+    }
+  }
+
+  // Método útil para debugging
+  async logTokenInfo() {
+    const token = await this.getToken();
+    if (token) {
+      console.log('🔑 Token actual:', token.substring(0, 50) + '...');
+
+      // Decodificar payload (solo para debugging)
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        console.log('📋 Token expira en:', new Date(payload.exp * 1000));
+        console.log('👤 User ID:', payload.user_id);
+      } catch (e) {
+        console.error('Error decodificando token');
+      }
+    } else {
+      console.log('❌ No hay token disponible');
+    }
   }
 }
