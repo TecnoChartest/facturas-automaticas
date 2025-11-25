@@ -6,8 +6,8 @@ export class Cliente {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int', { unique: true, nullable: true })
-  cedula: number;
+  @Column('varchar', { length: 50 })
+  cedula: string;
 
   @Column('varchar', { length: 100 })
   nombre_cliente: string;

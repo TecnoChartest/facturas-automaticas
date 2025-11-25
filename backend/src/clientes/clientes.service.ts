@@ -1,4 +1,9 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cliente } from './entities/cliente.entity';
@@ -26,7 +31,7 @@ export class ClienteService {
     return await this.clienteRepository.save(cliente);
   }
 
-  async findByCedula(cedula: number): Promise<Cliente | null> {
+  async findByCedula(cedula: string): Promise<Cliente | null> {
     return await this.clienteRepository.findOne({
       where: { cedula: cedula },
     });
@@ -36,5 +41,32 @@ export class ClienteService {
     return await this.clienteRepository.findOne({
       where: { id },
     });
+  }
+
+  async findAll(): Promise<Cliente[]> {
+    try {
+      const clientes = await this.clienteRepository.find({
+        order: {
+          id: 'ASC',
+        },
+      });
+
+      if (!clientes || clientes.length === 0) {
+        throw new HttpException(
+          'No se encontraron clientes',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      return clientes;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'Error interno del servidor al obtener clientes',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }

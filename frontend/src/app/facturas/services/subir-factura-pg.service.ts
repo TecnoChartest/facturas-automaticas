@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
+import Swal from 'sweetalert2';
 
 export interface Factura {
   id: string;
@@ -169,10 +170,49 @@ export class SubirFacturaPg {
   }
 
   crearCliente(clienteData: any): Observable<any> {
+    console.log(clienteData);
     return this.http.post(`${environment.SUBIR_CLIENTE_pg}`, clienteData);
   }
 
   crearFacturaConArchivo(formData: FormData): Observable<any> {
-    return this.http.post(`${environment.SUBIR_FACTURA_pg}/upload`, formData);
+    return this.http.post(`${environment.SUBIR_FACTURA_pg}/upload`, formData).pipe(
+      catchError((error: HttpErrorResponse) => {
+
+        const err = error.error;
+
+        if (error.status === 409 || err?.alert || err?.message?.includes('existe')) {
+          Swal.fire({
+            icon: 'warning',
+            title: '¡Factura duplicada!',
+            text: err?.message || 'Ya existe una factura con este número.',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#f59e0b',
+          });
+        }
+        else if (error.status === 400) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Datos incompletos',
+            text: err?.message || 'Faltan datos requeridos',
+          });
+        }
+        else if (error.status >= 500) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error del servidor',
+            text: 'Ya existe una factura con este número.',
+          });
+        }
+        else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: err?.message || 'Ocurrió un error inesperado',
+          });
+        }
+
+        return throwError(() => error);
+      })
+    );
   }
 }

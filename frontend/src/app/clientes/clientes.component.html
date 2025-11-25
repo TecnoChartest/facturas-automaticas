@@ -1,0 +1,44 @@
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Lista de Clientes</h2>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2663EB]"></div>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading" class="overflow-x-auto">
+    <table class="w-full min-w-full">
+      <thead>
+        <tr class="border-b-2 border-gray-300">
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">ID</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Cédula</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Nombre</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Dirección</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Teléfono</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Ciudad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of clientes"
+          class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+          <td class="py-4 px-4 text-sm text-gray-700">{{ cliente.id }}</td>
+          <td class="py-4 px-4 text-sm text-gray-700">{{ cliente.cedula || 'N/A' }}</td>
+          <td class="py-4 px-4 text-sm text-gray-700 font-medium">{{ cliente.nombre_cliente }}</td>
+          <td class="py-4 px-4 text-sm text-gray-700">{{ cliente.direccion || 'N/A' }}</td>
+          <td class="py-4 px-4 text-sm text-gray-700">{{ cliente.telefono || 'N/A' }}</td>
+          <td class="py-4 px-4 text-sm text-gray-700">{{ cliente.ciudad }}</td>
+        </tr>
+
+        <!-- Empty State -->
+        <tr *ngIf="clientes.length === 0">
+          <td colspan="6" class="py-8 text-center text-gray-500">
+            No hay clientes registrados
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,35 +1,51 @@
 import { Routes } from '@angular/router';
-import { DashboardLayoutComponent } from './presentation/layout/dashboardLayout/dashboardLayout.component';
+import { canActivate, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['/login']);
+const redirectLoggedInToDashboard = () => redirectLoggedInTo(['/dashboard']);
 
 export const routes: Routes = [
   {
-    path: '',
-    component: DashboardLayoutComponent,
+    path: 'login',
+    loadComponent: () => import('./auth/auth.component').then((m) => m.AuthComponent),
+    ...canActivate(redirectLoggedInToDashboard),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./sideBar/sideBar'),
+    ...canActivate(redirectUnauthorizedToLogin),
     children: [
       {
-        path: 'dashboard',
-        loadComponent: () =>
-          import('./dashboard/dashboard.component'),
-        data: {
-          icon: 'fa-solid fa-spell-check',
-          title: 'Dashboard',
-          description: 'Panel de usuario',
-        },
+        path: 'estadisticas',
+        loadComponent: () => import('./dashboard/dashboard.component'),
+      },
+      {
+        path: 'subir-factura',
+        loadComponent: () => import('./facturas/features/subir-facturas/subir-facturas.component'),
       },
       {
         path: 'facturas',
-        loadChildren: () => import('./facturas/facturas.routes'),
-        data: {
-          icon: 'fa-solid fa-spell-check',
-          title: 'Facturas',
-          description: 'Gestión de facturas',
-        },
+        loadComponent: () => import('./facturas/features/mostrarFacturas/facturas-table.component'),
       },
       {
-        path: '**',
-        redirectTo: 'facturas',
+        path: 'clientes',
+        loadComponent: () => import('./clientes/clientes.component'),
+      },
+      // Ruta por defecto dentro del dashboard (opcional)
+      {
+        path: '',
+        redirectTo: 'estadisticas',
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
   },
 ];

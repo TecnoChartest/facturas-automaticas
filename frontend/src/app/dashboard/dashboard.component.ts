@@ -10,19 +10,15 @@ import { environment } from '../../environments/environment.development';
 })
 export default class DashboardComponent {
   // URL pública de Metabase
-  private metabaseUrl =
-    `${environment.CONSUMIR_METABASE}`;
+  private metabaseUrl = `${environment.CONSUMIR_METABASE}`;
   safeIframeUrl!: SafeResourceUrl;
 
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit(): void {
-    // Sanitizar la URL para que Angular la considere segura
     this.safeIframeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.metabaseUrl);
     console.log('Dashboard URL sanitized:', this.metabaseUrl);
   }
 
-  ngOnDestroy(): void {
-    // Limpieza si es necesaria
-  }
+  ngOnDestroy(): void {}
 }

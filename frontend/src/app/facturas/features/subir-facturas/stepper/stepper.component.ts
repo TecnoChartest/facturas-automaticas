@@ -139,14 +139,11 @@ export class StepperComponent implements OnInit {
         if (response.success) {
           this.currentStep = 4;
           this.cdRef.detectChanges();
-        } else {
-          alert(`Error: ${response.message}`);
         }
       },
       error: (error: any) => {
         console.error('Error al guardar:', error);
         this.isLoading = false;
-        alert('Error al guardar la factura y cliente. Intenta nuevamente.');
       },
     });
   }

@@ -1,0 +1,95 @@
+<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Lista de Facturas</h2>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2663EB]"></div>
+  </div>
+
+  <!-- Table -->
+  <div *ngIf="!loading" class="overflow-x-auto">
+    <table class="w-full min-w-full">
+      <thead>
+        <tr class="border-b-2 border-gray-300">
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">ID</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Cliente</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Fecha Generación</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Fecha Vencimiento</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Total Bruto</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Total IVA</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Total a Pagar</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Método Pago</th>
+          <th class="text-left py-4 px-4 text-sm font-semibold text-gray-700">Archivo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let factura of facturas"
+          class="border-b border-gray-200 hover:bg-gray-50 transition-colors duration-150">
+          <td class="py-4 px-4 text-sm text-gray-700">{{ factura.id }}</td>
+          <td class="py-4 px-4 text-sm text-gray-700">
+            {{ factura.cliente?.nombre_cliente || 'Cliente no encontrado' }}
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-700">
+            {{ factura.fechaGeneracion | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-700">
+            {{ factura.fechaVencimiento | date:'dd/MM/yyyy' }}
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-700">
+            {{ factura.totalBruto | currency:'USD':'symbol':'1.2-2' }}
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-700">
+            {{ factura.totalIva | currency:'USD':'symbol':'1.2-2' }}
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-700 font-semibold text-[#2663EB]">
+            {{ factura.totalPagar | currency:'USD':'symbol':'1.2-2' }}
+          </td>
+          <td class="py-4 px-4 text-sm text-gray-700">{{ factura.metodoPago }}</td>
+          <td class="py-4 px-4">
+            <button (click)="verArchivo(factura.path)"
+              class="flex items-center text-[#2663EB] hover:text-blue-700 transition-colors duration-200"
+              title="Ver archivo">
+              <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              Ver
+            </button>
+          </td>
+        </tr>
+
+        <!-- Empty State -->
+        <tr *ngIf="facturas.length === 0">
+          <td colspan="9" class="py-8 text-center text-gray-500">
+            No hay facturas registradas
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal para previsualización (Opcional) -->
+<div *ngIf="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-xl shadow-2xl max-w-4xl max-h-[90vh] w-full">
+    <div class="flex justify-between items-center p-4 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800">Vista previa del archivo</h3>
+      <button (click)="cerrarModal()" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="p-4 max-h-[80vh] overflow-auto">
+      <iframe *ngIf="selectedFile" [src]="selectedFile" class="w-full h-96 border-0" frameborder="0">
+      </iframe>
+      <p *ngIf="!selectedFile" class="text-center text-gray-500 py-8">
+        No se puede cargar el archivo
+      </p>
+    </div>
+  </div>
+</div>

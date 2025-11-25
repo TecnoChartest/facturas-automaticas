@@ -1,16 +1,15 @@
 <form class="w-full max-w-7xl mx-auto px-6" #facturaForm="ngForm">
-  <h2>Datos Factura</h2>
-  <br>
+  <h2 class="text-2xl font-bold text-gray-800 mb-4">Datos Factura</h2>
+
   <!-- Fila 1 -->
   <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
     <div class="relative z-0 w-full mb-5 group">
       <input type="number" name="id" id="id" [(ngModel)]="facturaData.id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="id" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="id" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         ID factura
@@ -19,12 +18,11 @@
 
     <div class="relative z-0 w-full mb-5 group">
       <input type="date" name="fechaGeneracion" id="fechaGeneracion" [(ngModel)]="facturaData.fechaGeneracion" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="fechaGeneracion" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="fechaGeneracion" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Fecha de generación
@@ -33,12 +31,11 @@
 
     <div class="relative z-0 w-full mb-5 group">
       <input type="date" name="fechaVencimiento" id="fechaVencimiento" [(ngModel)]="facturaData.fechaVencimiento" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="fechaVencimiento" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="fechaVencimiento" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Fecha de vencimiento
@@ -48,15 +45,13 @@
 
   <!-- Fila 2 -->
   <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
-
     <div class="relative z-0 w-full mb-5 group">
       <input type="number" name="totalIva" id="totalIva" [(ngModel)]="facturaData.totalIva" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="totalIva" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="totalIva" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Total IVA
@@ -65,12 +60,11 @@
 
     <div class="relative z-0 w-full mb-5 group">
       <input type="number" name="totalBruto" id="totalBruto" [(ngModel)]="facturaData.totalBruto" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="totalBruto" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="totalBruto" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Total bruto
@@ -79,12 +73,11 @@
 
     <div class="relative z-0 w-full mb-5 group">
       <input type="number" name="totalPagar" id="totalPagar" [(ngModel)]="facturaData.totalPagar" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="totalPagar" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="totalPagar" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Total a pagar
@@ -93,14 +86,13 @@
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
-
     <div class="relative z-0 w-full mb-5 group">
       <input type="text" name="metodoPago" id="metodoPago" [(ngModel)]="facturaData.metodoPago" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-      <label for="metodoPago" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " />
+      <label for="metodoPago" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Método de pago
@@ -108,12 +100,11 @@
     </div>
   </div>
 
-  <br>
-  <h2>Productos</h2>
-
+  <h2 class="text-2xl font-bold text-gray-800 mb-4">Productos</h2>
 
   <div class="mb-4">
-    <button type="button" (click)="agregarItem()" class="text-blue-600 hover:text-blue-800">
+    <button type="button" (click)="agregarItem()"
+      class="text-[#2663EB] hover:text-blue-700 font-medium transition-colors duration-200">
       + Agregar Producto
     </button>
   </div>
@@ -121,32 +112,31 @@
   <!-- Tabla de Items Simple -->
   <table class="w-full mb-6">
     <thead>
-      <tr>
-        <th class="text-left">Ítem</th>
-        <th class="text-left">Descripción</th>
-        <th class="text-left">Cantidad</th>
-        <th class="text-left">Acciones</th>
+      <tr class="border-b-2 border-gray-300">
+        <th class="text-left py-3 text-gray-800 font-semibold">Ítem</th>
+        <th class="text-left py-3 text-gray-800 font-semibold">Descripción</th>
+        <th class="text-left py-3 text-gray-800 font-semibold">Cantidad</th>
+        <th class="text-left py-3 text-gray-800 font-semibold">Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of facturaData.items; let i = index">
-        <td class="py-2">
+      <tr *ngFor="let item of facturaData.items; let i = index" class="border-b border-gray-200">
+        <td class="py-3 text-gray-700">
           {{ item.item }}
         </td>
-        <td class="py-2">
-          <input type="text" [(ngModel)]="item.description" [name]="'description_' + i" class="w-full px-2 py-1 border text-sm text-gray-900 bg-transparent
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 rounded"
+        <td class="py-3">
+          <input type="text" [(ngModel)]="item.description" [name]="'description_' + i"
+            class="w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2663EB] focus:border-[#2663EB] transition-colors duration-200"
             placeholder="Descripción">
         </td>
-        <td class="py-2">
-          <input type="number" [(ngModel)]="item.cantidad" [name]="'cantidad_' + i" class="w-full px-2 py-1 border text-sm text-gray-900 bg-transparent
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 rounded"
+        <td class="py-3">
+          <input type="number" [(ngModel)]="item.cantidad" [name]="'cantidad_' + i"
+            class="w-full px-3 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2663EB] focus:border-[#2663EB] transition-colors duration-200"
             placeholder="Cantidad" min="0">
         </td>
-        <td class="py-2">
-          <button type="button" (click)="eliminarItem(i)" class="text-red-600 hover:text-red-800">
+        <td class="py-3">
+          <button type="button" (click)="eliminarItem(i)"
+            class="text-red-500 hover:text-red-700 transition-colors duration-200">
             Eliminar
           </button>
         </td>
@@ -154,25 +144,23 @@
 
       <!-- Mensaje cuando no hay items -->
       <tr *ngIf="facturaData.items.length === 0">
-        <td colspan="4" class="py-4 text-center text-gray-500">
+        <td colspan="4" class="py-8 text-center text-gray-500 bg-gray-50 rounded-lg">
           No hay productos agregados
         </td>
       </tr>
     </tbody>
   </table>
 
-  <br>
-  <h2>Datos cliente</h2>
-  <br>
+  <h2 class="text-2xl font-bold text-gray-800 mb-4">Datos cliente</h2>
+
   <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
     <div class="relative z-0 w-full mb-5 group">
       <input type="text" name="nombreCliente" id="nombreCliente" [(ngModel)]="facturaData.nombreCliente" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="nombreCliente" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="nombreCliente" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Cliente
@@ -180,13 +168,12 @@
     </div>
 
     <div class="relative z-0 w-full mb-5 group">
-      <input type="number" name="cedula" id="cedula" [(ngModel)]="facturaData.cedula" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="Cédula" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+      <input type="text" name="cedula" id="cedula" [(ngModel)]="facturaData.cedula" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="cedula" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Cédula
@@ -195,12 +182,11 @@
 
     <div class="relative z-0 w-full mb-5 group">
       <input type="text" name="direccion" id="direccion" [(ngModel)]="facturaData.direccion" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="Dirección" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="direccion" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Dirección
@@ -211,12 +197,11 @@
   <div class="grid grid-cols-1 md:grid-cols-3 md:gap-6 w-full">
     <div class="relative z-0 w-full mb-5 group">
       <input type="text" name="telefono" id="telefono" [(ngModel)]="facturaData.telefono" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="Teléfono" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="telefono" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Teléfono
@@ -225,12 +210,11 @@
 
     <div class="relative z-0 w-full mb-5 group">
       <input type="text" name="ciudad" id="ciudad" [(ngModel)]="facturaData.ciudad" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0
-        border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600
-        dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "
-        required />
-      <label for="Cédula" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300
+        border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-[#2663EB] peer"
+        placeholder=" " required />
+      <label for="ciudad" class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300
         transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-        peer-focus:text-blue-600 peer-focus:dark:text-blue-500
+        peer-focus:text-[#2663EB]
         peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
         peer-focus:scale-75 peer-focus:-translate-y-6">
         Ciudad

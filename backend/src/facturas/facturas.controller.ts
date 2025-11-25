@@ -11,17 +11,19 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  HttpException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import type { Response } from 'express';
 import { CreateFacturaDto } from './dto/create-factura.dto';
 import { FacturasService } from './facturas.service';
 import { FileService } from './file.service';
+import { Factura } from './entities/factura.entity';
 
 @Controller('facturas')
 export class FacturasController {
   constructor(
-    private readonly facturasService: FacturasService,
+    private readonly facturaService: FacturasService,
     private readonly fileService: FileService,
   ) {}
 
@@ -31,7 +33,7 @@ export class FacturasController {
     @Res() res: Response,
   ) {
     try {
-      const nuevaFactura = await this.facturasService.create(createFacturaDto);
+      const nuevaFactura = await this.facturaService.create(createFacturaDto);
 
       return res.status(HttpStatus.CREATED).json({
         success: true,
@@ -61,7 +63,7 @@ export class FacturasController {
 
       createFacturaDto.path = filePath;
 
-      const nuevaFactura = await this.facturasService.create(createFacturaDto);
+      const nuevaFactura = await this.facturaService.create(createFacturaDto);
 
       return res.status(HttpStatus.CREATED).json({
         success: true,
@@ -78,17 +80,29 @@ export class FacturasController {
   }
 
   @Get()
-  findAll() {
-    return this.facturasService.findAll();
+  async findAll(): Promise<Factura[]> {
+    try {
+      const facturas = await this.facturaService.findAll();
+      return facturas;
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Error al obtener las facturas',
+          message: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.facturasService.findOne(+id);
+    return this.facturaService.findOne(+id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.facturasService.remove(+id);
+    return this.facturaService.remove(+id);
   }
 }

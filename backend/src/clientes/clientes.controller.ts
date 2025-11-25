@@ -9,11 +9,13 @@ import {
   Get,
   Param,
   HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import express from 'express';
 import { ConflictException } from '@nestjs/common';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { ClienteService } from './clientes.service';
+import { Cliente } from './entities/cliente.entity';
 
 @Controller('clientes')
 export class ClienteController {
@@ -50,7 +52,7 @@ export class ClienteController {
 
   @Get('cedula/:cedula')
   async findByCedula(
-    @Param('cedula') cedula: number,
+    @Param('cedula') cedula: string,
     @Res() res: express.Response,
   ) {
     try {
@@ -73,6 +75,23 @@ export class ClienteController {
         message: 'Error al buscar el cliente',
         error: error.message,
       });
+    }
+  }
+
+  @Get()
+  async findAll(): Promise<Cliente[]> {
+    try {
+      const clientes = await this.clienteService.findAll();
+      return clientes;
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: 'Error al obtener los clientes',
+          message: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 }
